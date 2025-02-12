@@ -3,16 +3,16 @@ import plotly.express as px
 
 from dash import Dash, dcc, html, Input, Output
 
-# Preparing your data for usage -----------------
+# Preparing your data for usage ----------------------------------------
 
-# VVV Reading the file VVV
-df = pd.read_csv("LA_PM2.5_25_data.csv")
+# Reading the file
+df = pd.read_csv("SB_Ozone_24'_data.csv")
 
-# VVV Finding and sorting the data VVV
+# Finding and sorting the data
 df["site_name"] = pd.Series(df["Local Site Name"]).str.lower()
 df["date"] = pd.to_datetime(df["Date"])
 
-# VVV Groups the data VVV
+# Groups the data
 df = (
     df.groupby([df["date"].dt.date, "site_name"])[
         ["Daily AQI Value"]
@@ -24,14 +24,14 @@ df = (
 df = df.reset_index()
 print(df.head())
 
-# App Layout ------------------------------------
+# App Layout -----------------------------------------------------------
 stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
 app = Dash(__name__, external_stylesheets=stylesheets)
 
 app.layout = html.Div(
     [
         html.Div(
-            html.H1("Hello", style={"textAlign": "center"}),
+            html.H1("Good Old Bakersfield Air", style={"textAlign": "center"}),
             className="row",
         ),
         html.Div(dcc.Graph(id="line-chart", figure={}), className="row"),
@@ -56,7 +56,7 @@ app.layout = html.Div(
 )
 
 
-# Callbacks --------------------------------------
+# Callbacks ---------------------------------------------------------
 @app.callback(
     Output(component_id="line-chart", component_property="figure"),
     [Input(component_id="my-dropdown", component_property="value")],
